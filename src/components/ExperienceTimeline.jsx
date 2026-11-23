@@ -5,57 +5,7 @@ import { Briefcase, Calendar, MapPin } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-
-const experiences = [
-  {
-    role: "Full Stack Developer",
-    company: "Rentkar",
-    location: "Mumbai, IN",
-    period: "Nov 2025 - Present",
-    type: "Full-time",
-    description:
-      "Working as part of the core engineering team on Rentkar’s rental platform for gaming consoles like PlayStation 5. Responsible for solving critical production bugs, improving backend workflows, and maintaining a seamless user experience across the platform. Contribute to both frontend interfaces and backend feature development.",
-    achievements: [
-      "Resolved high-priority runtime issues affecting live users, ensuring platform stability and reducing downtime",
-      "Implemented scalable backend enhancements, improving data flow and API reliability",
-      "Shipped UI and UX improvements that reduced user friction and improved checkout interactions",
-      "Collaborated with founders and product team to refine requirements and deliver features faster"
-    ],
-    current: true,
-  },
-  {
-    role: "Jr. Full Stack Developer",
-    company: "Techno Serve Software Solutions",
-    location: "Mumbai, IN",
-    period: "July 2024 - Oct 2025",
-    type: "Full-time",
-    description:
-      "Developed full-stack web applications using React, Next.js, Astro.js, Node.js, and MongoDB. Built dashboards, authentication systems, and API-driven features while collaborating with design and backend teams to deliver scalable, production-grade solutions.",
-    achievements: [
-      "Shipped core features across multiple client and internal products, including user dashboards, authentication flows, and data-driven modules",
-      "Improved application Core Web Vitals and overall Lighthouse performance by 25% through optimized asset delivery and code splitting",
-      "Introduced a reusable component architecture, cutting development and onboarding time for new features",
-      "Integrated external APIs and automated workflows, reducing manual operations and deployment friction"
-    ],
-    current: false
-  },
-  {
-    role: "Web Developer Intern",
-    company: "Techno Serve Software Solutions",
-    location: "Mumbai, IN",
-    period: "Jan 2024 - July 2024",
-    type: "Internship",
-    description:
-      "Built end-to-end client websites by converting UI/UX designs into responsive frontends using Astro.js, React.js, Tailwind, and Bootstrap. Integrated REST APIs and deployed optimized web applications on Vercel.",
-    achievements: [
-      "Delivered multiple production-ready websites from scratch",
-      "Reduced development time by creating reusable UI components",
-      "Improved website performance and load speed by 15–20%",
-      "Worked hands-on with WordPress for custom solutions and content workflows",
-    ],
-    current: false,
-  },
-]
+import { experiences } from "@/data/portfolio"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -97,7 +47,7 @@ export default function ExperienceTimeline() {
             Work Experience
           </h2>
           <p className="text-zinc-400 max-w-lg">
-            Turning ideas into scalable, real-world applications by working across frontend, backend, and deployment. I build, optimize, and maintain products that people actually use.
+            Work across frontend, backend and deployment, from client websites to a live rental platform.
           </p>
         </motion.div>
 
@@ -114,7 +64,7 @@ export default function ExperienceTimeline() {
 
           {experiences.map((exp, index) => (
             <motion.div
-              key={exp.company}
+              key={`${exp.company}-${exp.role}`}
               variants={itemVariants}
               className="relative pl-8 md:pl-20 pb-12 last:pb-0"
             >
@@ -166,7 +116,7 @@ export default function ExperienceTimeline() {
                 {/* Achievements */}
                 <div className="space-y-2">
                   <span className="text-xs uppercase tracking-wider text-zinc-500 font-medium ">
-                    Key Achievements
+                    Key Contributions
                   </span>
                   <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                     {exp.achievements.map((achievement) => (

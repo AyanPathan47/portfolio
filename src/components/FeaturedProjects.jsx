@@ -1,60 +1,20 @@
 "use client"
 
-import { useRef } from "react"
+import { useRef, useState, useEffect } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { ExternalLink, Github, ArrowUpRight } from "lucide-react"
+import { ExternalLink, Github, ArrowUpRight, Lock } from "lucide-react"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-
-const projects = [
-    {
-        title: "E-Commerce Platform",
-        description:
-            "A full-featured e-commerce solution with real-time inventory management, payment processing, and analytics dashboard.",
-        image: "/images/project-1.png",
-        tags: ["Next.js", "Supabase", "Stripe", "Tailwind"],
-        liveUrl: "https://example.com",
-        githubUrl: "https://github.com",
-        color: "blue",
-    },
-    {
-        title: "Task Management App",
-        description:
-            "Collaborative project management tool with real-time updates, kanban boards, and team communication features.",
-        image: "/images/project-2.png",
-        tags: ["React", "Node.js", "Socket.io", "PostgreSQL"],
-        liveUrl: "https://example.com",
-        githubUrl: "https://github.com",
-        color: "purple",
-    },
-    {
-        title: "AI Content Generator",
-        description:
-            "SaaS platform leveraging AI to generate marketing copy, blog posts, and social media content.",
-        image: "/images/project-3.png",
-        tags: ["Next.js", "OpenAI", "Prisma", "Vercel"],
-        liveUrl: "https://example.com",
-        githubUrl: "https://github.com",
-        color: "green",
-    },
-    {
-        title: "Real-time Analytics Dashboard",
-        description:
-            "Interactive dashboard for monitoring business metrics with customizable widgets and data visualization.",
-        image: "/images/project-4.png",
-        tags: ["React", "D3.js", "AWS", "GraphQL"],
-        liveUrl: "https://example.com",
-        githubUrl: "https://github.com",
-        color: "orange",
-    },
-]
+import { projects, profile } from "@/data/portfolio"
+import ProjectPreview from "@/components/ProjectPreview"
 
 const colorVariants = {
     blue: "from-blue-500/20 to-blue-600/5",
     purple: "from-purple-500/20 to-purple-600/5",
     green: "from-green-500/20 to-green-600/5",
     orange: "from-orange-500/20 to-orange-600/5",
+    cyan: "from-cyan-500/20 to-cyan-600/5",
 }
 
 const glowVariants = {
@@ -62,13 +22,26 @@ const glowVariants = {
     purple: "bg-purple-500",
     green: "bg-green-500",
     orange: "bg-orange-500",
+    cyan: "bg-cyan-500",
 }
 
 function ProjectCard({ project, index }) {
     return (
-        <Card className="group w-[350px] md:w-[450px] shrink-0 bg-zinc-900/50 border-zinc-800 hover:border-zinc-700 transition-all duration-300 overflow-hidden">
+        <Card className="group w-[350px] md:w-[450px] shrink-0 flex flex-col bg-zinc-900/50 border-zinc-800 hover:border-zinc-700 transition-all duration-300 overflow-hidden">
             {/* Project Image/Preview */}
             <div className={`relative h-48 md:h-56 bg-gradient-to-br ${colorVariants[project.color]} overflow-hidden`}>
+                {project.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                        src={project.image}
+                        alt={`${project.title} screenshot`}
+                        className="absolute inset-0 w-full h-full object-cover"
+                    />
+                )}
+
+                {/* Temporary illustrated preview, until a real screenshot is set */}
+                {!project.image && <ProjectPreview type={project.preview} color={project.color} />}
+
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent z-10" />
 
@@ -97,23 +70,41 @@ function ProjectCard({ project, index }) {
                 </div>
 
                 {/* Center content - project icon/visual */}
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="text-6xl md:text-7xl font-bold text-zinc-800/50 font-mono group-hover:text-zinc-700/50 transition-colors">
+                <div className={`absolute inset-0 flex items-center justify-center z-10 ${project.image || project.preview ? "hidden" : ""}`}>
+                    <div className="text-5xl md:text-6xl font-bold text-zinc-800/50 font-mono group-hover:text-zinc-700/50 transition-colors">
                         {project.title.charAt(0)}
                     </div>
                 </div>
             </div>
 
             <CardHeader className="pb-2">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                    <span className="text-xs font-mono text-zinc-500">{project.category}</span>
+                    {project.status && (
+                        <Badge variant="secondary" className="text-xs shrink-0">
+                            {project.status}
+                        </Badge>
+                    )}
+                </div>
                 <h3 className="text-xl font-semibold text-zinc-100 group-hover:text-white transition-colors">
                     {project.title}
                 </h3>
             </CardHeader>
 
-            <CardContent className="pb-4">
+            <CardContent className="pb-4 flex-1">
                 <p className="text-zinc-400 text-sm leading-relaxed mb-4">
                     {project.description}
                 </p>
+                {project.features.length > 0 && (
+                    <ul className="space-y-1.5 mb-4">
+                        {project.features.slice(0, 3).map((feature) => (
+                            <li key={feature} className="flex items-start gap-2 text-xs text-zinc-300">
+                                <span className="text-blue-500">→</span>
+                                <span>{feature}</span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
                 <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                         <Badge
@@ -124,39 +115,74 @@ function ProjectCard({ project, index }) {
                             {tag}
                         </Badge>
                     ))}
+                    {project.note && (
+                        <Badge
+                            variant="outline"
+                            className="gap-1.5 text-xs px-2 py-0.5 border-dashed text-zinc-500"
+                        >
+                            <Lock className="w-3 h-3" />
+                            {project.note}
+                        </Badge>
+                    )}
                 </div>
             </CardContent>
 
-            <CardFooter className="gap-3">
-                <Button size="sm" className="gap-2 flex-1" asChild>
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-1">
-                        <ExternalLink className="w-4 h-4" />
-                        Live Demo
-                    </a>
-                </Button>
-                <Button size="sm" variant="outline" className="gap-2 flex-1" asChild>
-                    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"  className="flex items-center justify-between gap-1">
-                        <Github className="w-4 h-4" />
-                        GitHub
-                    </a>
-                </Button>
-            </CardFooter>
+            {project.links.length > 0 && (
+                <CardFooter className="gap-3">
+                    {project.links.map((link) => (
+                        <Button
+                            key={link.href}
+                            size="sm"
+                            variant={link.type === "live" ? "default" : "outline"}
+                            className="gap-2 flex-1"
+                            asChild
+                        >
+                            <a href={link.href} target="_blank" rel="noopener noreferrer" className="gap-2">
+                                {link.type === "live" ? <ExternalLink className="w-4 h-4" /> : <Github className="w-4 h-4" />}
+                                {link.label}
+                            </a>
+                        </Button>
+                    ))}
+                </CardFooter>
+            )}
         </Card>
     )
 }
 
 export default function FeaturedProjects() {
     const targetRef = useRef(null)
+    const trackRef = useRef(null)
+    const [distance, setDistance] = useState(0)
     const { scrollYProgress } = useScroll({
         target: targetRef,
     })
 
+    // Measure how far the card track overflows the viewport so the horizontal
+    // movement ends exactly on the last card, whatever the number of projects.
+    useEffect(() => {
+        const measure = () => {
+            const track = trackRef.current
+            if (!track) return
+            const viewport = track.parentElement.clientWidth
+            // scrollWidth leaves out the track's right padding, so add it back
+            const padRight = parseFloat(getComputedStyle(track).paddingRight) || 0
+            setDistance(Math.max(0, track.scrollWidth + padRight - viewport))
+        }
+        measure()
+        window.addEventListener("resize", measure)
+        return () => window.removeEventListener("resize", measure)
+    }, [])
+
     // Transform vertical scroll to horizontal movement
-    // Adjust the output range based on number of cards and their width
-    const x = useTransform(scrollYProgress, [0, 1], ["5%", "-75%"])
+    const x = useTransform(scrollYProgress, [0, 1], [0, -distance])
 
     return (
-        <section id="projects" ref={targetRef} className="relative h-[300vh]">
+        <section
+            id="projects"
+            ref={targetRef}
+            className="relative"
+            style={{ height: `calc(100vh + ${distance}px)` }}
+        >
             <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
                 {/* Section Header */}
                 <div className="container mx-auto max-w-6xl px-4 md:px-6 mb-8 mt-16">
@@ -175,8 +201,8 @@ export default function FeaturedProjects() {
                                     Selected Projects
                                 </h2>
                                 <p className="text-zinc-400 max-w-lg text-sm md:text-base">
-                                    A collection of projects that showcase my skills in building
-                                    scalable, user-centric applications.
+                                    Mobile and full-stack products I have built, plus academic and
+                                    research work.
                                 </p>
                             </div>
                             {/* Scroll indicator */}
@@ -202,8 +228,9 @@ export default function FeaturedProjects() {
                     <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#09090b] to-transparent z-10 pointer-events-none" />
 
                     <motion.div
+                        ref={trackRef}
                         style={{ x }}
-                        className="flex gap-6 px-4 md:px-12"
+                        className="flex gap-6 px-4 md:px-12 min-[2200px]:pl-[max(3rem,calc((100vw_-_72rem)/2_+_1.5rem))]!"
                     >
                         {projects.map((project, index) => (
                             <ProjectCard key={project.title} project={project} index={index} />
@@ -216,10 +243,10 @@ export default function FeaturedProjects() {
                                 Want to see more?
                             </h3>
                             <p className="text-zinc-400 text-sm mb-6">
-                                Check out my GitHub for more projects and open source contributions.
+                                Browse my GitHub for more of my code.
                             </p>
                             <Button className="gap-2" asChild>
-                                <a href="https://github.com" target="_blank" rel="noopener noreferrer"  className="flex items-center justify-between gap-1">
+                                <a href={profile.github} target="_blank" rel="noopener noreferrer"  className="flex items-center justify-between gap-1">
                                     <Github className="w-4 h-4" />
                                     View GitHub
                                 </a>

@@ -5,6 +5,7 @@ import { ArrowRight, Terminal, Code2, Database, Cloud, Sparkles } from "lucide-r
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { profile } from "@/data/portfolio"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -46,20 +47,24 @@ export default function HeroSection() {
                   Available for work
                 </Badge>
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4 md:mb-6 leading-[1.1]">
+                  <span className="sr-only">Ayan Pathan, Full Stack Developer: </span>
                   Building Scalable{" "}
                   <span className="text-zinc-500">Digital Experiences</span>
                 </h1>
                 <p className="text-zinc-400 text-base md:text-lg max-w-lg mb-6 md:mb-8 leading-relaxed">
-                  Full Stack Developer specializing in React, Node.js, and Cloud
-                  Architecture. Crafting performant web applications with modern
-                  technologies.
+                  Full Stack Developer specializing in React, Next.js, React Native
+                  and Node.js. I build responsive interfaces, REST APIs, mobile apps
+                  and production deployments, from database queries to cloud hosting.
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
                 <Button className="gap-2" asChild>
-                  <a href="#work" className="flex items-center justify-between gap-1">
+                  <a href="#projects" className="flex items-center justify-between gap-1">
                     View Projects <ArrowRight className="w-4 h-4" />
                   </a>
+                </Button>
+                <Button variant="outline" asChild>
+                  <a href={profile.resume} target="_blank" rel="noopener noreferrer">Download Resume</a>
                 </Button>
                 <Button variant="outline" asChild>
                   <a href="#contact">Contact Me</a>
@@ -126,21 +131,21 @@ export default function HeroSection() {
           {/* Stats Cards Row */}
           <motion.div variants={itemVariants} className="grid grid-cols-3 gap-3 md:gap-4">
             <Card className="p-4 flex flex-col justify-center items-center text-center border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 transition-all duration-300 hover:border-zinc-700">
-              <span className="text-2xl md:text-3xl font-bold text-zinc-100">2+</span>
+              <span className="text-2xl md:text-3xl font-bold text-zinc-100">3+</span>
               <span className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-wider mt-1">
                 Years Exp
               </span>
             </Card>
             <Card className="p-4 flex flex-col justify-center items-center text-center border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 transition-all duration-300 hover:border-zinc-700">
-              <span className="text-2xl md:text-3xl font-bold text-zinc-100">15+</span>
+              <span className="text-2xl md:text-3xl font-bold text-zinc-100">10+</span>
               <span className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-wider mt-1">
-                Projects
+                Client Sites
               </span>
             </Card>
             <Card className="p-4 flex flex-col justify-center items-center text-center border-zinc-800 bg-zinc-900/50 hover:bg-zinc-900 transition-all duration-300 hover:border-zinc-700">
-              <span className="text-2xl md:text-3xl font-bold text-zinc-100">100%</span>
+              <span className="text-2xl md:text-3xl font-bold text-zinc-100">10+</span>
               <span className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-wider mt-1">
-                Quality
+                Integrations
               </span>
             </Card>
           </motion.div>

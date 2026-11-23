@@ -16,81 +16,69 @@ const jetbrainsMono = JetBrains_Mono({
 // Site configuration
 const siteConfig = {
   name: "Ayan Pathan",
-  title: "Ayan Pathan | Full Stack Developer",
-  description: "Full Stack Developer with 2+ years of experience specializing in React, Next.js, Node.js, and Cloud Architecture. Building scalable, performant digital experiences.",
-  url: "https://ayanpathan.me", // Update with your actual domain
-  ogImage: "/logo.jpg",
+  title: "Ayan Pathan | Full Stack Developer (React, Next.js, Node.js)",
+  description:
+    "Ayan Pathan is a Full Stack Developer from Mumbai, India. I build web and mobile apps with React, Next.js, React Native and Node.js.",
+  url: "https://ayanpathan.me",
   links: {
     github: "https://github.com/AyanPathan47",
     linkedin: "https://www.linkedin.com/in/ayannpathan/",
   },
 };
 
+export const viewport = {
+  themeColor: "#09090b",
+  colorScheme: "dark",
+};
+
 export const metadata = {
-  // Basic metadata
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.title,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  applicationName: siteConfig.name,
   keywords: [
     "Ayan Pathan",
+    "Ayan Pathan Developer",
+    "Ayan Pathan Full Stack Developer",
     "Full Stack Developer",
+    "Full Stack Developer Mumbai",
     "React Developer",
     "Next.js Developer",
+    "React Native Developer",
     "Node.js Developer",
-    "TypeScript",
-    "JavaScript",
-    "Web Developer",
-    "Frontend Developer",
-    "Backend Developer",
+    "MERN Stack Developer",
     "Portfolio",
-    "Software Engineer",
-    "India",
-    "Freelance Developer",
   ],
   authors: [{ name: siteConfig.name, url: siteConfig.url }],
   creator: siteConfig.name,
   publisher: siteConfig.name,
 
-  // Favicon and icons
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
-  },
+  // One canonical URL, so ayanpathan.me / www / trailing variants consolidate
+  alternates: { canonical: "/" },
 
-  // Manifest for PWA
+  icons: { icon: "/favicon.ico" },
   manifest: "/site.webmanifest",
 
-  // Open Graph
+  // Open Graph / Twitter images come from app/opengraph-image.js and app/twitter-image.js
   openGraph: {
-    type: "website",
-    locale: "en_US",
+    type: "profile",
+    locale: "en_IN",
     url: siteConfig.url,
     title: siteConfig.title,
     description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
-        alt: `${siteConfig.name} - Full Stack Developer Portfolio`,
-      },
-    ],
+    firstName: "Ayan",
+    lastName: "Pathan",
   },
-
-  // Twitter Card
   twitter: {
     card: "summary_large_image",
     title: siteConfig.title,
     description: siteConfig.description,
-    images: [siteConfig.ogImage],
-    creator: "@ayanpathan", // Update with your Twitter handle
   },
 
-  // Robots
   robots: {
     index: true,
     follow: true,
@@ -103,51 +91,81 @@ export const metadata = {
     },
   },
 
-  // Verification (add your verification codes)
-  // verification: {
-  //   google: "your-google-verification-code",
-  //   yandex: "your-yandex-verification-code",
-  // },
+  // Set NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION (Search Console "HTML tag" code) to enable.
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
 
-  // Alternate languages (if needed)
-  // alternates: {
-  //   canonical: siteConfig.url,
-  // },
-
-  // Category
   category: "technology",
 };
 
-// JSON-LD Structured Data
+// JSON-LD Structured Data: Person + WebSite + ProfilePage, linked by @id
+const personId = `${siteConfig.url}/#person`;
+const websiteId = `${siteConfig.url}/#website`;
+
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "Person",
-  name: siteConfig.name,
-  url: siteConfig.url,
-  image: `${siteConfig.url}${siteConfig.ogImage}`,
-  jobTitle: "Full Stack Developer",
-  description: siteConfig.description,
-  sameAs: [
-    siteConfig.links.github,
-    siteConfig.links.linkedin,
-  ],
-  knowsAbout: [
-    "React",
-    "Next.js",
-    "Node.js",
-    "TypeScript",
-    "JavaScript",
-    "MongoDB",
-    "PostgreSQL",
-    "AWS",
-    "Docker",
-    "Web Development",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: siteConfig.name,
+      givenName: "Ayan",
+      familyName: "Pathan",
+      url: siteConfig.url,
+      jobTitle: "Full Stack Developer",
+      description: siteConfig.description,
+      worksFor: { "@type": "Organization", name: "Rentkar" },
+      alumniOf: [
+        { "@type": "CollegeOrUniversity", name: "University of Mumbai" },
+        { "@type": "CollegeOrUniversity", name: "Guru Nanak Khalsa College, Mumbai" },
+      ],
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Mumbai",
+        addressRegion: "Maharashtra",
+        addressCountry: "IN",
+      },
+      sameAs: [siteConfig.links.github, siteConfig.links.linkedin],
+      knowsAbout: [
+        "Full Stack Development",
+        "React",
+        "Next.js",
+        "React Native",
+        "Node.js",
+        "Express.js",
+        "TypeScript",
+        "MongoDB",
+        "PostgreSQL",
+        "Redis",
+        "REST APIs",
+        "AWS",
+        "Docker",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      url: siteConfig.url,
+      name: `${siteConfig.name} | Portfolio`,
+      inLanguage: "en-IN",
+      publisher: { "@id": personId },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${siteConfig.url}/#profilepage`,
+      url: siteConfig.url,
+      name: siteConfig.title,
+      inLanguage: "en-IN",
+      isPartOf: { "@id": websiteId },
+      mainEntity: { "@id": personId },
+    },
   ],
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en-IN" className="dark">
       <head>
         {/* JSON-LD Structured Data */}
         <script

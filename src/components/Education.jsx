@@ -4,72 +4,7 @@ import { motion } from "framer-motion"
 import { GraduationCap, Award, BookOpen, Calendar, MapPin } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-
-const education = [
-  {
-    degree: "Master of Science in Computer Science",
-    school: "University of Mumbai",
-    location: "Mumbai, IN",
-    period: "2025 - Present",
-    gpa: "8/10",
-    status: "Pursuing",
-    highlights: [
-      "Focus on software systems, programming paradigms, and computer fundamentals",
-      "Hands-on learning in advanced software development concepts",
-      "Expected Graduation: May 2026"
-    ],
-    courses: [
-      "Advanced Computer Architecture",
-      "Operating Systems",
-      "Data Structures & Algorithms",
-      "Software Engineering",
-      "Distributed Computing",
-      "Database Management Systems"
-    ]
-  },
-  {
-    degree: "Bachelor of Science in Information Technology",
-    school: "University of Mumbai",
-    location: "Mumbai, IN",
-    period: "2022 - 2025",
-    gpa: "9/10",
-    status: "completed",
-    highlights: [
-      "Specialization in Information Technology with a strong focus on software development and databases",
-      "Built multiple academic projects applying real-world programming concepts",
-      "Graduated with distinction"
-    ],
-    courses: [
-      "Object Oriented Programming",
-      "Web Development",
-      "Database Management Systems",
-      "Computer Networks",
-      "Information Security",
-      "Software Engineering"
-    ],
-  },
-]
-
-const certifications = [
-  {
-    name: "Certified AWS Solutions Architect",
-    issuer: "Forage",
-    date: "2025",
-    icon: "🏆",
-  },
-  // {
-  //   name: "Meta Front-End Developer",
-  //   issuer: "Meta (Coursera)",
-  //   date: "2023",
-  //   icon: "⚛️",
-  // },
-  // {
-  //   name: "Node.js Application Developer",
-  //   issuer: "OpenJS Foundation",
-  //   date: "2023",
-  //   icon: "🟢",
-  // },
-]
+import { education, certifications } from "@/data/portfolio"
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -125,7 +60,7 @@ export default function Education() {
           {/* Education Cards - Side by Side */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {education.map((edu) => (
-              <motion.div key={edu.school} variants={itemVariants}>
+              <motion.div key={edu.degree} variants={itemVariants}>
                 <Card
                   className={`h-full p-6 border-zinc-800 hover:border-zinc-700 transition-all duration-300 relative overflow-hidden ${edu.status === "Pursuing"
                     ? "bg-gradient-to-br from-blue-950/50 via-zinc-900 to-zinc-950"
@@ -176,6 +111,7 @@ export default function Education() {
                   </div>
 
                   {/* GPA */}
+                  {edu.gpa && (
                   <div className="mb-5">
                     <Badge
                       variant="outline"
@@ -187,6 +123,8 @@ export default function Education() {
                       GPA: {edu.gpa}
                     </Badge>
                   </div>
+
+                  )}
 
                   {/* Highlights */}
                   <div className="mb-5">
@@ -240,7 +178,7 @@ export default function Education() {
           {/* Certifications Grid */}
           <motion.div variants={itemVariants}>
             <h3 className="text-sm uppercase tracking-wider text-zinc-500 font-medium mb-4">
-              Professional Certifications
+              Certifications
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {certifications.map((cert, index) => (
@@ -259,6 +197,9 @@ export default function Education() {
                           {cert.name}
                         </h4>
                         <p className="text-xs text-zinc-500">{cert.issuer}</p>
+                        {cert.note && (
+                          <p className="text-xs text-zinc-600 mt-0.5">{cert.note}</p>
+                        )}
                       </div>
                       <Badge variant="secondary" className="text-xs shrink-0">
                         {cert.date}

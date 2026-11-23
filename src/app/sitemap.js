@@ -1,36 +1,10 @@
 export default function sitemap() {
-    const baseUrl = "https://ayanpathan.me"; // Update with your actual domain
-
     return [
         {
-            url: baseUrl,
+            url: "https://ayanpathan.me",
             lastModified: new Date(),
             changeFrequency: "monthly",
             priority: 1,
-        },
-        {
-            url: `${baseUrl}/#projects`,
-            lastModified: new Date(),
-            changeFrequency: "monthly",
-            priority: 0.8,
-        },
-        {
-            url: `${baseUrl}/#experience`,
-            lastModified: new Date(),
-            changeFrequency: "monthly",
-            priority: 0.8,
-        },
-        {
-            url: `${baseUrl}/#education`,
-            lastModified: new Date(),
-            changeFrequency: "yearly",
-            priority: 0.6,
-        },
-        {
-            url: `${baseUrl}/#contact`,
-            lastModified: new Date(),
-            changeFrequency: "yearly",
-            priority: 0.7,
         },
     ];
 }

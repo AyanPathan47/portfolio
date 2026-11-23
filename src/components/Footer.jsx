@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Github, Linkedin, Twitter, Mail, ArrowUpRight, Heart, MapPin, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { profile } from "@/data/portfolio"
 
 const socialLinks = [
     {
@@ -30,6 +31,7 @@ const socialLinks = [
 
 const quickLinks = [
     { name: "Home", href: "#home" },
+    { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
     { name: "Experience", href: "#experience" },
     { name: "Education", href: "#education" },
@@ -178,7 +180,7 @@ export default function Footer() {
                                 </a>
                             </Button>
                             <Button size="lg" variant="outline" className="gap-2 px-8" asChild>
-                                <a href="/Ayann_Resume_Sep2025.pdf" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-1">
+                                <a href={profile.resume} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between gap-1">
                                     Download CV
                                     <ArrowUpRight className="w-4 h-4" />
                                 </a>

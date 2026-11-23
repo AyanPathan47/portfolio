@@ -17,19 +17,27 @@ const buttonSizes = {
   icon: "h-10 w-10",
 }
 
+const baseClasses =
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]"
+
 const Button = React.forwardRef(
-  ({ className, variant = "default", size = "default", ...props }, ref) => {
+  ({ className, variant = "default", size = "default", asChild = false, children, ...props }, ref) => {
+    const classes = cn(baseClasses, buttonVariants[variant], buttonSizes[size], className)
+
+    // asChild: style the single child element (e.g. an <a>) instead of wrapping it
+    // in a <button>, so the whole button area is the link.
+    if (asChild && React.isValidElement(children)) {
+      return React.cloneElement(children, {
+        ...props,
+        ref,
+        className: cn(classes, children.props.className),
+      })
+    }
+
     return (
-      <button
-        className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]",
-          buttonVariants[variant],
-          buttonSizes[size],
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
+      <button className={classes} ref={ref} {...props}>
+        {children}
+      </button>
     )
   }
 )
